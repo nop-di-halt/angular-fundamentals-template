@@ -1,13 +1,22 @@
-<app-header></app-header>
+<app-header>
+  <div class="header-display-info-actions">
+    <span *ngIf="isLoggedIn">{{userName}}</span>
+    <app-button [buttonText]="isLoggedIn?'Logout':'Login'"></app-button>
+  </div>
+</app-header>
 <div class="app-root">
   <!-- Search component -->
   <!--<app-search></app-search>-->
 
-  <!-- Info component -->
-  <!--<app-info></app-info>-->
-
-  <!-- Course Card component -->
-  <!--<app-course-card></app-course-card>-->
+  <app-info>
+    <app-courses-list *ngIf="courses.length>0; else listEmpty" [courses]="courses">
+    </app-courses-list>
+    <ng-template #listEmpty>
+      <h3>Your List Is Empty</h3>
+      <p>Please use 'Add New Course' button to add your first course</p>
+    </ng-template>
+    <app-button [buttonText]="'Add New Course'"></app-button>
+  </app-info>
 
   <!-- Login Form component -->
   <!--<app-login-form></app-login-form>-->

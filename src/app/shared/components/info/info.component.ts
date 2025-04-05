@@ -5,5 +5,7 @@ import { Component } from '@angular/core';
   templateUrl: './info.component.html',
   styleUrls: ['./info.component.scss']
 })
-export class InfoComponent {}
-// Use the names `title` and `text`.
+export class InfoComponent {
+  title: string = "Course Info";
+  text?: string;
+}
