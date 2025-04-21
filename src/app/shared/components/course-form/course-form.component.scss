@@ -1,7 +1,7 @@
 @import 'src/app/shared/styles/styles';
 
 .course {
- min-width: 60vw;
+  min-width: 60vw;
 
   &__flex {
     display: flex;
@@ -33,5 +33,9 @@
   &__icon {
     margin-left: 4px;
     cursor: pointer;
+  }
+
+  .authors__section {
+    display: flex;
   }
 }

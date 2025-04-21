@@ -1,53 +1,72 @@
 <!-- Replace ::text:: with your code -->
 <h2>Create / Edit Course</h2>
-<form>
+<form [formGroup]="courseForm">
   <div class="app-plate">
     <div class="course">
       <h3>Main Info</h3>
       <div class="form__control">
         <label for="title">Title</label>
         <!--Use the name `title` for the form control.-->
-        <input type="text" id="title" placeholder="Input text"/>
-        <span id="titleErrorMessage" class="text-danger">Title is required.</span>
+        <input type="text" id="title" formControlName="title" placeholder="Input text" />
+        <span class="text-danger" *ngIf="getErrors('title','required')">Title is required.</span>
+        <span class="text-danger" *ngIf="getErrors('title','minlength')">Title should contain at least 2 characters.</span>
       </div>
       <div class="form__control">
         <label for="description">Description</label>
         <!--Use the name `description` for the form control.-->
-        <textarea
-          id="description"
-          name="description"
-          placeholder="Input text"
-          rows="4"
-          cols="5"
-        ></textarea>
-        <span id="descriptionErrorMessage" class="text-danger">Description is required.</span>
-      </div>
-      <div class="separator"></div>
-      <h3>Authors</h3>
-      <div class="form__control">
-        <div class="course__flex">
-          <!--Use the name `author` for the form control.-->
-          <input type="text" id="author" placeholder="Input Author Name"/>
-          <app-button id="createAuthor"></app-button>
-        </div>
-        <span id="authorErrorMessage">New author should contain only latin letters and numbers.</span>
-        <div class="course__authors">
-          <!--Use the name `authors` for the form array.-->
-          ::Authors::
-        </div>
+        <textarea id="description" name="description" formControlName="description" placeholder="Input text" rows="4"
+          cols="5"></textarea>
+        <span class="text-danger" *ngIf="getErrors('description','required')">Description is required.</span>
+        <span class="text-danger" *ngIf="getErrors('description','minlength')">Description should contain at least 2 characters.</span>
       </div>
       <div class="separator"></div>
       <h3>Duration</h3>
       <div class="form__control">
         <div class="course__flex">
           <!--Use the name `duration` for the form array.-->
-          <input type="number" id="duration" placeholder="Input duration"/>
+          <input type="number" id="duration" formControlName="duration" placeholder="Input duration" />
           <div class="course__duration">
-            ::Duration::
+            {{courseForm.controls["duration"].value | duration}} hours
           </div>
         </div>
-        <span id="durationErrorMessage" class="text-danger">Duration is required.</span>
+        <span class="text-danger" *ngIf="getErrors('duration','required')">Duration is required.</span>
+        <span class="text-danger" *ngIf="getErrors('duration','min')">Duration cannot be less than 0.</span>
       </div>
+      <div class="separator"></div>
+      <h3>Authors</h3>
+      <div class="form__control">
+        <div class="course__flex">
+          <input type="text" id="author" formControlName="author" placeholder="Input Author Name" />
+          <app-button id="createAuthor" (click)="createAuthor()">Create Author</app-button>
+        </div>
+        <span class="text-danger" *ngIf="!courseForm.controls['author'].valid">New author
+          should contain only latin letters and numbers.</span>
+      </div>
+      <section class="authors__section">
+        <div style="width: 50%;">
+          <h4>Authors List</h4>
+          <table>
+            <tr *ngFor="let author of authorsList">
+              <td>{{author.name}}</td>
+              <td><app-button [iconName]="addIcon" (click)="addToCourseAuthors(author)"></app-button></td>
+            </tr>
+          </table>
+        </div>
+        <div style="width: 50%;">
+          <h4>Course Authors</h4>
+          <span *ngIf="authors.controls.length==0;else authorList">Author list is empty</span>
+          <ng-template #authorList>
+            <table formArrayName="authors">
+              <tr *ngFor="let authorCtrl of authors.controls">
+                <td><input type="text" [placeholder]="authorCtrl.value.name" disabled /></td>
+                <td><app-button [iconName]="deleteIcon"
+                    (click)="removeFromCourseAuthors(authorCtrl.value)"></app-button>
+                </td>
+              </tr>
+            </table>
+          </ng-template>
+        </div>
+      </section>
       <div class="form__action">
         <app-button></app-button>
       </div>
