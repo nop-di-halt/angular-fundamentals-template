@@ -63,10 +63,18 @@ export class CourseFormComponent {
 
   getErrors(controlName: string, errorName: string): boolean {
     const control = this.courseForm.controls[controlName];
-    if ((this.submitted || control.touched) && control.errors?.[errorName]){
+    if ((this.submitted || control.touched) && control.errors?.[errorName]) {
       return true;
     }
     return false;
   }
-  // Use the names `title`, `description`, `author`, 'authors' (for authors list), `duration` for the form controls.
+
+  onSubmit() {
+    this.submitted = true;
+    if (this.courseForm.valid) {
+      this.courseForm.reset();
+    } else {
+      this.courseForm.markAllAsTouched();
+    }
+  }
 }

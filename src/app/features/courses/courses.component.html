@@ -1,1 +1,7 @@
-<p>courses works!</p>
+<app-search></app-search>
+<app-courses-list *ngIf="courses.length>0; else listEmpty" [courses]="courses">
+</app-courses-list>
+<ng-template #listEmpty>
+    <h3>Your List Is Empty</h3>
+    <p>Please use 'Add New Course' button to add your first course</p>
+</ng-template>

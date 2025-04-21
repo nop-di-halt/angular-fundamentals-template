@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-login-form',
@@ -10,7 +11,8 @@ export class LoginFormComponent {
   @ViewChild("loginForm") public loginForm!: NgForm;
   email!: string;
   password!: string;
-
+  eyeIcon = faEye;
+  eyeSlashIcon = faEyeSlash;
 
   login(form: NgForm): void {
     Object.values(form.controls).forEach(c => c.markAsTouched());

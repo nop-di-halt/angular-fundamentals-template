@@ -5,19 +5,23 @@
       <div>
         <div class="form__control">
           <label for="email">Email</label>
-          <!--Use the name `email` for the form control.-->
           <input type="text" id="email" name="email" [(ngModel)]="email" placeholder="Input text" emailValidator
             required />
           <span id="emailErrorMessage" class="text-danger"
-            *ngIf="(loginForm.submitted || loginForm.controls?.['email']?.touched) && loginForm.controls['email'].errors?.['required']">Email is required.</span>
+            *ngIf="(loginForm.submitted || loginForm.controls?.['email']?.touched) && loginForm.controls['email'].errors?.['required']">Email
+            is required.</span>
           <span id="emailErrorMessage" class="text-danger"
             *ngIf="loginForm.controls?.['email']?.touched && loginForm.controls['email'].errors?.['valid']">{{loginForm.controls['email'].errors!['valid'].message}}</span>
         </div>
         <div class="form__control">
           <label for="password">Password</label>
-          <!--Use the name `password` for the form control.-->
-          <input type="password" id="password" name="password" [(ngModel)]="password" placeholder="Input text"
-            required />
+          <div class="input-wrapper">
+            <input type="password" id="password" name="password" togglePassword #pw="togglePassword"
+              [(ngModel)]="password" placeholder="Input text" required />
+            <button type="button">
+              <fa-icon [icon]="pw.visible?eyeIcon:eyeSlashIcon" (click)="pw.toggle()"></fa-icon>
+            </button>
+          </div>
           <span id="passwordErrorMessage" class="text-danger"
             *ngIf="(loginForm.submitted || loginForm.controls?.['password']?.touched) && loginForm.controls['password'].errors?.['required']">Password
             is required.</span>

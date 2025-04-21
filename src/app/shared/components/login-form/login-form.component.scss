@@ -7,3 +7,34 @@
   flex-direction: column;
   justify-content: space-between;
 }
+
+.input-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 300px;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding-right: 40px;
+  height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  padding-left: 10px;
+}
+
+.input-wrapper button {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 30px;
+  width: 30px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #666;
+}
