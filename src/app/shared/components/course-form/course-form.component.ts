@@ -24,20 +24,20 @@ export class CourseFormComponent {
     library.addIconPacks(fas);
     this.authorsList = Array.from(mockedAuthorsList);
   }
+
+  authors = new FormArray<FormControl<{ id: string; name: string } | null>>([]);
   courseForm: FormGroup = new FormGroup({
     title: new FormControl({ value: "", disabled: false }, { updateOn: "blur", validators: [Validators.required, Validators.minLength(2)] }),
     description: new FormControl({ value: "", disabled: false }, { updateOn: "blur", validators: [Validators.required, Validators.minLength(2)] }),
     duration: new FormControl({ value: undefined, disabled: false }, { updateOn: "blur", validators: [Validators.required, Validators.min(0)] }),
     author: new FormControl({ value: "", disabled: false }, { updateOn: "change", validators: [Validators.minLength(2), Validators.pattern("^[A-Za-z\\d ]+$")] }),
-    authors: new FormArray([])
+    authors: this.authors
   });
-  
 
   addToCourseAuthors(author: { id: string, name: string }) {
     this.courseAuthors.push(author);
     this.authorsList.splice(this.authorsList.indexOf(author), 1);
-    const authors = this.courseForm.controls["authors"] as FormArray;
-    authors.push(new FormControl({ value: author, disabled: true }));
+    this.authors.push(new FormControl({ value: author, disabled: true }));
     this.cdr.detectChanges();
   }
 
@@ -58,7 +58,7 @@ export class CourseFormComponent {
     }
   }
 
-  get authors(): FormArray {
+  get authorsForm(): FormArray {
     return this.courseForm.get('authors') as FormArray;
   }
 

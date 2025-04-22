@@ -54,10 +54,10 @@
         </div>
         <div style="width: 50%;">
           <h4>Course Authors</h4>
-          <span *ngIf="authors.controls.length==0;else authorList">Author list is empty</span>
+          <span *ngIf="authorsForm.controls.length==0;else authorList">Author list is empty</span>
           <ng-template #authorList>
             <table formArrayName="authors">
-              <tr *ngFor="let authorCtrl of authors.controls">
+              <tr *ngFor="let authorCtrl of authorsForm.controls">
                 <td><input type="text" [placeholder]="authorCtrl.value.name" disabled /></td>
                 <td><app-button [iconName]="deleteIcon"
                     (click)="removeFromCourseAuthors(authorCtrl.value)"></app-button>
