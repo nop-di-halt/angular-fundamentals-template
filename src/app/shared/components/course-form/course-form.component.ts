@@ -28,9 +28,10 @@ export class CourseFormComponent {
     title: new FormControl({ value: "", disabled: false }, { updateOn: "blur", validators: [Validators.required, Validators.minLength(2)] }),
     description: new FormControl({ value: "", disabled: false }, { updateOn: "blur", validators: [Validators.required, Validators.minLength(2)] }),
     duration: new FormControl({ value: undefined, disabled: false }, { updateOn: "blur", validators: [Validators.required, Validators.min(0)] }),
-    author: new FormControl({ value: "", disabled: false }, { updateOn: "change", validators: [Validators.pattern("^[A-Za-z\\d ]+$")] }),
+    author: new FormControl({ value: "", disabled: false }, { updateOn: "change", validators: [Validators.minLength(2), Validators.pattern("^[A-Za-z\\d ]+$")] }),
     authors: new FormArray([])
   });
+  
 
   addToCourseAuthors(author: { id: string, name: string }) {
     this.courseAuthors.push(author);

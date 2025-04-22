@@ -24,7 +24,7 @@
         <div class="course__flex">
           <input type="number" id="duration" formControlName="duration" placeholder="Input duration" />
           <div class="course__duration">
-            {{courseForm.controls["duration"].value | duration}} hours
+            {{courseForm.controls["duration"].value | duration}}
           </div>
         </div>
         <span class="text-danger" *ngIf="getErrors('duration','required')">Duration is required.</span>
@@ -37,8 +37,10 @@
           <input type="text" id="author" formControlName="author" placeholder="Input Author Name" />
           <app-button id="createAuthor" (click)="createAuthor()">Create Author</app-button>
         </div>
-        <span class="text-danger" *ngIf="!courseForm.controls['author'].valid">New author
-          should contain only latin letters and numbers.</span>
+        <span class="text-danger" *ngIf="getErrors('author','minlength')">Author name should contain at least 2
+          characters.</span>
+        <span class="text-danger" *ngIf="getErrors('author','pattern')">Author name should contain only latin letters
+          and digits.</span>
       </div>
       <section class="authors__section">
         <div style="width: 50%;">
@@ -46,7 +48,7 @@
           <table>
             <tr *ngFor="let author of authorsList">
               <td>{{author.name}}</td>
-              <td><app-button [iconName]="addIcon" (click)="addToCourseAuthors(author)"></app-button></td>
+              <td><app-button id="Add author" [iconName]="addIcon" (click)="addToCourseAuthors(author)"></app-button></td>
             </tr>
           </table>
         </div>

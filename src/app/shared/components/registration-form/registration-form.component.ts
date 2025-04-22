@@ -12,7 +12,7 @@ export class RegistrationFormComponent {
 
   registrationForm: FormGroup = new FormGroup({
     name: new FormControl({ value: "", disabled: false }, { updateOn: "change", validators: [Validators.required, Validators.minLength(6)] }),
-    email: new FormControl({ value: "", disabled: false }, { updateOn: "change", validators: [Validators.required, AppValidators.email] }),
+    email: new FormControl({ value: "", disabled: false }),
     password: new FormControl({ value: "", disabled: false }, { updateOn: "change", validators: [Validators.required] })
   });
 

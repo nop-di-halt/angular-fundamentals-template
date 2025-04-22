@@ -10,7 +10,7 @@
       </div>
       <div class="form__control">
         <label for="email">Email</label>
-        <input type="text" id="email" formControlName="email" placeholder="Input text" />
+        <input type="text" id="email" formControlName="email" placeholder="Input text" emailValidator required/>
         <span id="emailErrorMessage" class="text-danger" *ngIf="getError('email','required')">Email is required.</span>
         <span id="emailErrorMessage" class="text-danger" *ngIf="getError('email','valid')">Email is invalid.</span>
       </div>

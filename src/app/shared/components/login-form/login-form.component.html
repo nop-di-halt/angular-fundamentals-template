@@ -15,13 +15,14 @@
         </div>
         <div class="form__control">
           <label for="password">Password</label>
-          <div class="input-wrapper">
+          <!--<div class="input-wrapper">
             <input type="password" id="password" name="password" togglePassword #pw="togglePassword"
               [(ngModel)]="password" placeholder="Input text" required />
             <button type="button">
               <fa-icon [icon]="pw.visible?eyeIcon:eyeSlashIcon" (click)="pw.toggle()"></fa-icon>
             </button>
-          </div>
+          </div>-->
+          <input type="password" id="password" name="password" [(ngModel)]="password" placeholder="Input text" required />
           <span id="passwordErrorMessage" class="text-danger"
             *ngIf="(loginForm.submitted || loginForm.controls?.['password']?.touched) && loginForm.controls['password'].errors?.['required']">Password
             is required.</span>
