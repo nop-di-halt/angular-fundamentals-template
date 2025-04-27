@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, InjectionToken } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ModalComponent } from './components/modal/modal.component';
@@ -17,6 +17,8 @@ import { DurationPipe } from './pipes/duration.pipe';
 import { CustomDatePipe } from './pipes/custom-date.pipe';
 import { EmailValidatorDirective } from '@shared/directives/email.directive';
 import { ShowPasswordDirective } from './directives/showPassword.directive';
+
+export const WINDOW = new InjectionToken<Window>('Window', { providedIn: "root",  factory: () => typeof window !== 'undefined' ? window : {} as Window});
 
 const components = [
   HeaderComponent,

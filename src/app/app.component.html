@@ -1,12 +1,12 @@
 <app-header>
   <div class="header-display-info-actions">
-    <span *ngIf="isLoggedIn">{{userName}}</span>
-    <app-button [buttonText]="isLoggedIn?'Logout':'Login'"></app-button>
+    <!--<span *ngIf="isLoggedIn">{{userName}}</span>-->
+    <app-button [buttonText]="isLoggedIn? 'Logout':'Login'" (click)="isLoggedIn?logout():login()"></app-button>
   </div>
 </app-header>
 <div class="app-root">
-
-<!--
+  <router-outlet></router-outlet>
+  <!--
   <app-info>
     <app-courses [courses]="courses"></app-courses>
     <app-button [buttonText]="'Add New Course'"></app-button>
@@ -19,7 +19,7 @@
   <!--<app-registration-form></app-registration-form>-->
 
   <!-- Login Form component -->
-  <app-course-form></app-course-form>
+  <!--<app-course-form></app-course-form>-->
 
   <!-- Modal component -->
   <!-- <app-modal [message]="'Message'" [title]="'Title'" [okButtonText]="'Ok'" [cancelButtonText]="'Cancel'"></app-modal> -->

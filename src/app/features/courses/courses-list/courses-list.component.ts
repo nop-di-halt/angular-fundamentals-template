@@ -14,27 +14,27 @@ export class CoursesListComponent {
   editable: boolean = true;
 
   @Output()
-  showCourse = new EventEmitter<string>();
+  onShowCourse = new EventEmitter<string>();
 
   @Output()
-  editCourse = new EventEmitter<string>();
+  onEditCourse = new EventEmitter<string>();
 
   @Output()
-  deleteCourse = new EventEmitter<string>();
+  onDeleteCourse = new EventEmitter<string>();
 
   deleteIcon = faTrash;
   editIcon = faEdit;
 
-  showCourseInfo($event: string) {
-    this.showCourse.emit($event);
+  showCourseInfo(id: string) {
+    this.onShowCourse.emit(id);
   }
 
   onEditCourseClick(id: string) {
-    this.editCourse.emit(id);
+    this.onEditCourse.emit(id);
   }
 
   onDeleteCourseClick(id: string) {
-    this.deleteCourse.emit(id);
+    this.onDeleteCourse.emit(id);
   }
 }
 

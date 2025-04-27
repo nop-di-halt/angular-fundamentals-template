@@ -1,6 +1,6 @@
 <ul>
     <li *ngFor="let item of courses">
-        <app-course-card [course]="item" [isEditable]="editable" (clickOnShow)="showCourseInfo($event)">
+        <app-course-card [course]="item" [isEditable]="editable" (clickOnShow)="showCourseInfo(item.id)">
             <app-button [iconName]="deleteIcon" (click)="onDeleteCourseClick(item.id)"></app-button>
             <app-button [iconName]="editIcon" (click)="onEditCourseClick(item.id)"></app-button>
         </app-course-card>

@@ -1,30 +1,57 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { UserLogin, LoginResponse, RegisterResponse } from '../../shared/interfaces';
+import { SessionStorageService } from './session-storage.service';
+import { Router } from '@angular/router';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    login(user: any) { // replace 'any' with the required interface
-        // Add your code here
+    private apiUrl = "http://localhost:4000/";
+    private isAuthorized$$ = new BehaviorSubject<boolean>(false);
+    public isAuthorized$ = this.isAuthorized$$.asObservable();
+
+    constructor(private httpClient: HttpClient, private session: SessionStorageService, private router: Router) { }
+
+    login(user: UserLogin) {
+        this.httpClient.post<LoginResponse>(`${this.apiUrl}login`, user)
+            .subscribe(response => {
+                if (response.successful) {
+                    this.session.setToken(response.result);
+                    this.router.navigateByUrl("/");
+                    this.isAuthorised = true;
+                } else {
+                    this.router.navigateByUrl("login");
+                }
+            });
     }
 
     logout() {
-        // Add your code here
+        this.session.deleteToken();
+        this.isAuthorised = false;
     }
 
-    register(user: any) { // replace 'any' with the required interface
-        // Add your code here
+    register(user: UserLogin) {
+        this.httpClient.post<RegisterResponse>(`${this.apiUrl}register`, user)
+            .subscribe(response => {
+                if (response.successful) {
+                    this.router.navigateByUrl("/login");
+                }
+                console.log(response.result);
+            });
     }
 
     get isAuthorised() {
-        // Add your code here. Get isAuthorized$$ value
+        return this.isAuthorized$$.value;
     }
 
     set isAuthorised(value: boolean) {
-        // Add your code here. Change isAuthorized$$ value
+        this.isAuthorized$$.next(value);
     }
 
     getLoginUrl() {
-        // Add your code here
+        return `${this.apiUrl}login`;
     }
 }

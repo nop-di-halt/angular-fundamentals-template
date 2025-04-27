@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { mockedCoursesList, mockedAuthorsList } from './shared/mocks/mocks';
+import { AuthService } from './auth/services/auth.service';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -7,16 +10,19 @@ import { mockedCoursesList, mockedAuthorsList } from './shared/mocks/mocks';
 })
 export class AppComponent {
   title = 'courses-app';
-  isLoggedIn: boolean = false;
-  userName: string = "";
 
-  courses: { id: string }[] = mockedCoursesList.map(c => (
-    {
-      id: c.id,
-      title: c.title,
-      description: c.description,
-      creationDate: c.creationDate,
-      duration: c.duration,
-      authors: c.authors.map(id => mockedAuthorsList.find(author => author.id == id)?.name)
-    }));
+  constructor(private authService: AuthService, private router: Router) { }
+
+  get isLoggedIn(): boolean {
+    return this.authService.isAuthorised;
+  }
+
+  login(): void {
+    this.router.navigateByUrl("/login");
+  }
+
+  logout():void{
+    this.authService.logout();
+  }
 }
+ 

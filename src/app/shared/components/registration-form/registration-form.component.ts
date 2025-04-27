@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AppValidators } from '@app/shared/helpers/appValidators';
+import { UserLogin } from '@app/shared/interfaces';
 
 @Component({
   selector: 'app-registration-form',
@@ -16,6 +16,9 @@ export class RegistrationFormComponent {
     password: new FormControl({ value: "", disabled: false }, { updateOn: "change", validators: [Validators.required] })
   });
 
+  @Output()
+  onSubmit = new EventEmitter<UserLogin>();
+
   getError(controlName: string, errorName: string): boolean {
     const control = this.registrationForm.controls[controlName];
     if ((this.submitted || control.touched) && control.errors?.[errorName]) {
@@ -27,11 +30,14 @@ export class RegistrationFormComponent {
   submit() {
     this.submitted = true;
     if (this.registrationForm.valid) {
+      this.onSubmit.emit({
+        name: this.registrationForm.controls["name"].value,
+        email: this.registrationForm.controls["email"].value,
+        password: this.registrationForm.controls["password"].value
+      });
       this.submitted = false;
       this.registrationForm.reset();
-      console.log("sending form");
-    }
-    else {
+    }else {
       this.registrationForm.markAllAsTouched();
     }
   }
