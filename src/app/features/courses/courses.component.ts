@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { CoursesService } from '@app/services/courses.service';
+import { Course } from '@app/shared/interfaces';
 import { mockedCoursesList, mockedAuthorsList } from '@app/shared/mocks/mocks';
 
 @Component({
@@ -7,19 +9,21 @@ import { mockedCoursesList, mockedAuthorsList } from '@app/shared/mocks/mocks';
   styleUrls: ['./courses.component.css']
 })
 export class CoursesComponent {
- @Input()
-  courses: { id: string }[] = mockedCoursesList.map(c => (
-    {
-      id: c.id,
-      title: c.title,
-      description: c.description,
-      creationDate: c.creationDate,
-      duration: c.duration,
-      authors: c.authors.map(id => mockedAuthorsList.find(author => author.id == id)?.name)
-    }))
-  //courses!: { id: string }[];
+  constructor(private coursesService: CoursesService) { }
 
-  ngOnInit(){
-    console.log("Courses");
+  courses!: Course[];
+
+  ngOnInit() {
+    this.coursesService.getAll().subscribe(coursesResponse => {
+      if (coursesResponse.successful) {
+        this.coursesService.getAllAuthors().subscribe(authorsResponse => {
+          if (authorsResponse.successful) {
+            const courses = coursesResponse.result;
+            courses.forEach(c => c.authors = c.authors.map(id => authorsResponse.result.find(a => a.id == id)?.name || ""));
+            this.courses = courses;
+          }
+        });
+      }
+    });
   }
 }

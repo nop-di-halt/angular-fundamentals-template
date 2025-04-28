@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UserLogin, LoginResponse, RegisterResponse } from '../../shared/interfaces';
+import { apiUrl } from '@app/shared/api';
 import { SessionStorageService } from './session-storage.service';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    private apiUrl = "http://localhost:4000/";
     private isAuthorized$$ = new BehaviorSubject<boolean>(false);
     public isAuthorized$ = this.isAuthorized$$.asObservable();
-
+    private apiUrl = apiUrl;
     constructor(private httpClient: HttpClient, private session: SessionStorageService, private router: Router) { }
 
     login(user: UserLogin) {
-        this.httpClient.post<LoginResponse>(`${this.apiUrl}login`, user)
+        this.httpClient.post<LoginResponse>(`${this.apiUrl}/login`, user)
             .subscribe(response => {
                 if (response.successful) {
                     this.session.setToken(response.result);
@@ -34,7 +34,7 @@ export class AuthService {
     }
 
     register(user: UserLogin) {
-        this.httpClient.post<RegisterResponse>(`${this.apiUrl}register`, user)
+        this.httpClient.post<RegisterResponse>(`${this.apiUrl}/register`, user)
             .subscribe(response => {
                 if (response.successful) {
                     this.router.navigateByUrl("/login");
@@ -52,6 +52,6 @@ export class AuthService {
     }
 
     getLoginUrl() {
-        return `${this.apiUrl}login`;
+        return `${this.apiUrl}/login`;
     }
 }
