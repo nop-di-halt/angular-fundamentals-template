@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Course } from '@app/shared/interfaces';
+import { UserStoreService } from '@app/user/services/user-store.service';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -7,8 +9,14 @@ import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./courses-list.component.css']
 })
 export class CoursesListComponent {
+  constructor(private userStoreService: UserStoreService) { }
+  
+  get isAdmin() {
+    return this.userStoreService.isAdmin;
+  }
+
   @Input()
-  courses!: { id: string }[];
+  courses!: Course[] | null;
 
   @Input()
   editable: boolean = true;

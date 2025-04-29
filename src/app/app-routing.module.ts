@@ -6,7 +6,7 @@ const routes: Routes = [
     {
         path: "login",
         loadChildren: () => import("src/app/login/login.module").then(m => m.LoginModule),
-        canActivate:[NotAuthorizedGuard]
+        canActivate: [NotAuthorizedGuard]
     },
     {
         path: "registration",
@@ -15,7 +15,8 @@ const routes: Routes = [
     },
     {
         path: 'courses',
-        loadChildren: () => import('./features/courses/courses.module').then(m => m.CoursesModule)
+        loadChildren: () => import('./features/courses/courses.module').then(m => m.CoursesModule),
+        canLoad: [AuthorizedGuard]
     },
     {
         path: '',

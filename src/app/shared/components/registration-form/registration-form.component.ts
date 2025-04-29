@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { UserLogin } from '@app/shared/interfaces';
+import { UserLoginRequest } from '@app/shared/interfaces';
 
 @Component({
   selector: 'app-registration-form',
@@ -17,7 +17,7 @@ export class RegistrationFormComponent {
   });
 
   @Output()
-  onSubmit = new EventEmitter<UserLogin>();
+  onSubmit = new EventEmitter<UserLoginRequest>();
 
   getError(controlName: string, errorName: string): boolean {
     const control = this.registrationForm.controls[controlName];

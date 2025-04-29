@@ -1,6 +1,6 @@
 import { Component, EventEmitter, ViewChild, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { UserLogin } from '@app/shared/interfaces';
+import { UserLoginRequest } from '@app/shared/interfaces';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -16,7 +16,7 @@ export class LoginFormComponent {
   eyeSlashIcon = faEyeSlash;
 
   @Output()
-  onLogin = new EventEmitter<UserLogin>();
+  onLogin = new EventEmitter<UserLoginRequest>();
 
   login(form: NgForm): void {
     Object.values(form.controls).forEach(c => c.markAsTouched());

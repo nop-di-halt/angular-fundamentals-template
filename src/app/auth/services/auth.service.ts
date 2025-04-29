@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { UserLogin, LoginResponse, RegisterResponse } from '../../shared/interfaces';
+import { UserLoginRequest, LoginResponse, RegisterResponse } from '../../shared/interfaces';
 import { apiUrl } from '@app/shared/api';
 import { SessionStorageService } from './session-storage.service';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { UserStoreService } from '@app/user/services/user-store.service';
 
 @Injectable({
     providedIn: 'root'
@@ -12,16 +13,19 @@ import { BehaviorSubject } from 'rxjs';
 export class AuthService {
     private isAuthorized$$ = new BehaviorSubject<boolean>(false);
     public isAuthorized$ = this.isAuthorized$$.asObservable();
-    private apiUrl = apiUrl;
-    constructor(private httpClient: HttpClient, private session: SessionStorageService, private router: Router) { }
+    constructor(private httpClient: HttpClient,
+        private session: SessionStorageService,
+        private router: Router,
+        private userStoreService: UserStoreService) { }
 
-    login(user: UserLogin) {
-        this.httpClient.post<LoginResponse>(`${this.apiUrl}/login`, user)
+    login(user: UserLoginRequest) {
+        this.httpClient.post<LoginResponse>(`${apiUrl}/login`, user)
             .subscribe(response => {
                 if (response.successful) {
                     this.session.setToken(response.result);
                     this.router.navigateByUrl("/");
                     this.isAuthorised = true;
+                    this.userStoreService.getUser();
                 } else {
                     this.router.navigateByUrl("login");
                 }
@@ -33,8 +37,8 @@ export class AuthService {
         this.isAuthorised = false;
     }
 
-    register(user: UserLogin) {
-        this.httpClient.post<RegisterResponse>(`${this.apiUrl}/register`, user)
+    register(user: UserLoginRequest) {
+        this.httpClient.post<RegisterResponse>(`${apiUrl}/register`, user)
             .subscribe(response => {
                 if (response.successful) {
                     this.router.navigateByUrl("/login");
@@ -52,6 +56,6 @@ export class AuthService {
     }
 
     getLoginUrl() {
-        return `${this.apiUrl}/login`;
+        return `${apiUrl}/login`;
     }
 }

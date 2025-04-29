@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '@app/auth/services/auth.service';
-import { UserLogin } from '@app/shared/interfaces';
+import { UserLoginRequest } from '@app/shared/interfaces';
 
 @Component({
   selector: 'app-registration',
@@ -10,7 +10,7 @@ import { UserLogin } from '@app/shared/interfaces';
 export class RegistrationComponent {
   constructor(private authService: AuthService) { }
 
-  register(user: UserLogin) {
+  register(user: UserLoginRequest) {
     this.authService.register(user);
   }
 }

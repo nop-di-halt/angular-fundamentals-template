@@ -4,19 +4,41 @@ export interface User {
     email: string
 }
 
-export interface UserLogin extends User {
-    password: string
+export interface UserFull extends UserLoginRequest {
+    role: string,
+    id: string
 }
 
-export interface LoginResponse {
+export interface Response {
     successful: boolean,
+}
+
+export interface UserResponse extends Response {
+    result: UserFull
+}
+export interface LoginResponse extends Response {
     result: string,
     user: User
 }
 
-export interface RegisterResponse {
-    successful: boolean,
+export interface RegisterResponse extends Response {
     result: string
+}
+
+export interface AuthorsResponse extends Response {
+    result: Author[] | Author
+}
+
+export interface CoursesResponse extends Response {
+    result: Course[] | Course | string
+}
+
+export interface UserLoginRequest extends User {
+    password: string
+}
+
+export interface Author extends AuthorRequest {
+    id: string
 }
 
 export interface CourseRequest {
@@ -24,12 +46,8 @@ export interface CourseRequest {
     description: string,
     creationDate: string,
     duration: number,
-    authors: string[],
-}
 
-export interface CourseResponse {
-    successful: boolean,
-    result: Course
+    authors: string[],
 }
 
 export interface Course extends CourseRequest {
@@ -38,23 +56,4 @@ export interface Course extends CourseRequest {
 
 export interface AuthorRequest {
     name: string
-}
-
-export interface Author extends AuthorRequest {
-    id: string
-}
-
-export interface AuthorResponse {
-    successful: boolean,
-    result: Author
-}
-
-export interface AuthorsResponse {
-    successful: boolean,
-    result: Author[]
-}
-
-export interface CoursesResponse {
-    successful: boolean,
-    result: Course[]
 }

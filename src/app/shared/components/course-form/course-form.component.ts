@@ -69,13 +69,4 @@ export class CourseFormComponent {
     }
     return false;
   }
-
-  onSubmit() {
-    this.submitted = true;
-    if (this.courseForm.valid) {
-      this.courseForm.reset();
-    } else {
-      this.courseForm.markAllAsTouched();
-    }
-  }
 }

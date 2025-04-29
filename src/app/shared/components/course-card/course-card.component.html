@@ -16,8 +16,7 @@
         </div>
         <div class="course-card__info-actions">
             <div class="course-card__buttons">
-                <app-button [buttonText]="'SHOW COURSE'" (click)="showCourse()"></app-button>
-                <ng-content *ngIf="isEditable"></ng-content>
+                <ng-content></ng-content>
             </div>
         </div>
     </div>

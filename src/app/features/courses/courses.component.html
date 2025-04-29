@@ -1,5 +1,5 @@
 <app-search></app-search>
-<app-courses-list *ngIf="courses; else listEmpty" [courses]="courses">
+<app-courses-list *ngIf="!(isLoading$|async); else listEmpty" [courses]="courses$ | async">
 </app-courses-list>
 <ng-template #listEmpty>
     <h3>Your List Is Empty</h3>

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { CoursesService } from '@app/services/courses.service';
+import { CoursesStoreService } from '@app/services/courses-store.service';
 import { Course } from '@app/shared/interfaces';
-import { mockedCoursesList, mockedAuthorsList } from '@app/shared/mocks/mocks';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-courses',
@@ -9,21 +9,12 @@ import { mockedCoursesList, mockedAuthorsList } from '@app/shared/mocks/mocks';
   styleUrls: ['./courses.component.css']
 })
 export class CoursesComponent {
-  constructor(private coursesService: CoursesService) { }
+  courses$ = this.coursesStoreService.courses$ as Observable<Course[]>;
+  isLoading$ = this.coursesStoreService.isLoading$;
 
-  courses!: Course[];
+  constructor(private coursesStoreService: CoursesStoreService) { }
 
   ngOnInit() {
-    this.coursesService.getAll().subscribe(coursesResponse => {
-      if (coursesResponse.successful) {
-        this.coursesService.getAllAuthors().subscribe(authorsResponse => {
-          if (authorsResponse.successful) {
-            const courses = coursesResponse.result;
-            courses.forEach(c => c.authors = c.authors.map(id => authorsResponse.result.find(a => a.id == id)?.name || ""));
-            this.courses = courses;
-          }
-        });
-      }
-    });
+    this.coursesStoreService.getAll();
   }
 }
