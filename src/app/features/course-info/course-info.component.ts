@@ -18,7 +18,6 @@ export class CourseInfoComponent implements OnInit{
 
   ngOnInit() {
     this.coursesStoreService.getCourse(this.courseId);
-    this.coursesStoreService.courses$.subscribe(course => this.course = course as Course);
-    console.log(this.course);
+    this.coursesStoreService.result$.subscribe(course => this.course = course as Course);
   }
 }

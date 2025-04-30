@@ -14,7 +14,7 @@ import { mockedAuthorsList } from '@app/shared/mocks/mocks';
   styleUrls: ['./course-form.component.scss'],
 })
 export class CourseFormComponent {
-  authorsList: Array<{ id: string, name: string }>;
+  authorsList!: Array<{ id: string, name: string }>;
   courseAuthors: Array<{ id: string, name: string }> = [];
   deleteIcon = faTrash;
   addIcon = faAdd;
@@ -22,7 +22,6 @@ export class CourseFormComponent {
 
   constructor(public fb: FormBuilder, public library: FaIconLibrary, private cdr: ChangeDetectorRef) {
     library.addIconPacks(fas);
-    this.authorsList = Array.from(mockedAuthorsList);
   }
 
   authors = new FormArray<FormControl<{ id: string; name: string } | null>>([]);

@@ -8,12 +8,15 @@ import { CoursesService } from './courses.service';
 })
 export class CoursesStoreService {
     private isLoading$$ = new BehaviorSubject<boolean>(false);
-    private courses$$ = new BehaviorSubject<Course[] | Course | string>("");
-    private authors$$ = new BehaviorSubject<Author[] | Author>({ id: "", name: "" });
+    private courses$$ = new BehaviorSubject<Course[]>([]);
+    private result$$ = new BehaviorSubject<Course | Author | string>("");
+    private authors$$ = new BehaviorSubject<Author[]>([]);
 
     isLoading$ = this.isLoading$$.asObservable();
     courses$ = this.courses$$.asObservable();
     authors$ = this.authors$$.asObservable();
+    result$ = this.result$$.asObservable();
+
 
     constructor(private coursesService: CoursesService) { }
 
@@ -42,7 +45,7 @@ export class CoursesStoreService {
             .pipe(finalize(() => this.isLoading$$.next(false)))
             .subscribe(response => {
                 if (response.successful) {
-                    this.courses$$.next(response.result);
+                    this.result$$.next(response.result as Course);
                 }
             });
     }
@@ -50,17 +53,10 @@ export class CoursesStoreService {
     getCourse(id: string) {
         this.isLoading$$.next(true);
         this.coursesService.getCourse(id)
+            .pipe(finalize(() => this.isLoading$$.next(false)))
             .subscribe(response => {
                 if (response.successful) {
-                    this.coursesService.getAllAuthors()
-                        .pipe(finalize(() => this.isLoading$$.next(false)))
-                        .subscribe(authorsResponse => {
-                            if (authorsResponse.successful) {
-                                const course = response.result as Course;
-                                course.authors = course.authors.map(id => (authorsResponse.result as Author[]).find(a => a.id == id)?.name || "");
-                                this.courses$$.next(course);
-                            }
-                        });
+                    this.result$$.next(response.result as Course);
                 }
             });
     }
@@ -71,7 +67,7 @@ export class CoursesStoreService {
             .pipe(finalize(() => this.isLoading$$.next(false)))
             .subscribe(response => {
                 if (response.successful) {
-                    this.courses$$.next(response.result);
+                    this.result$$.next(response.result as Course);
                 }
             });
     }
@@ -82,7 +78,7 @@ export class CoursesStoreService {
             .pipe(finalize(() => this.isLoading$$.next(false)))
             .subscribe(response => {
                 if (response.successful) {
-                    this.courses$$.next(response.result);
+                    this.result$$.next(response.result as string);
                 }
             });
     }
@@ -112,7 +108,7 @@ export class CoursesStoreService {
             .pipe(finalize(() => this.isLoading$$.next(false)))
             .subscribe(response => {
                 if (response.successful) {
-                    this.authors$$.next(response.result);
+                    this.authors$$.next(response.result as Author[]);
                 }
             });
     }
@@ -124,7 +120,7 @@ export class CoursesStoreService {
             .pipe(finalize(() => this.isLoading$$.next(false)))
             .subscribe(response => {
                 if (response.successful) {
-                    this.authors$$.next(response.result);
+                    this.result$$.next(response.result as Author);
                 }
             });
     }
@@ -135,7 +131,7 @@ export class CoursesStoreService {
             .pipe(finalize(() => this.isLoading$$.next(false)))
             .subscribe(response => {
                 if (response.successful) {
-                    this.authors$$.next(response.result);
+                    this.result$$.next(response.result as Author);
                 }
             });
     }

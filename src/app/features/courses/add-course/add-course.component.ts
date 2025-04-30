@@ -6,5 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./add-course.component.css']
 })
 export class AddCourseComponent {
+  onSubmit() {
 
+  }
 }

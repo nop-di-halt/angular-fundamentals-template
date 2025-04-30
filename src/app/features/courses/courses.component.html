@@ -5,3 +5,4 @@
     <h3>Your List Is Empty</h3>
     <p>Please use 'Add New Course' button to add your first course</p>
 </ng-template>
+<app-button *ngIf="this.userStoreService.isAdmin" routerLink="add">Add New Course</app-button>

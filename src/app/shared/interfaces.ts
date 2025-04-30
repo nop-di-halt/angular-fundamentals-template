@@ -46,7 +46,6 @@ export interface CourseRequest {
     description: string,
     creationDate: string,
     duration: number,
-
     authors: string[],
 }
 
