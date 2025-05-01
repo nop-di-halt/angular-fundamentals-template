@@ -1,12 +1,12 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import {
   FormArray,
   FormBuilder, FormControl, FormGroup,
   Validators
 } from '@angular/forms';
+import { Author, CourseFormData } from '@app/shared/interfaces';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { fas, faTrash, faAdd, faL } from '@fortawesome/free-solid-svg-icons';
-import { mockedAuthorsList } from '@app/shared/mocks/mocks';
 
 @Component({
   selector: 'app-course-form',
@@ -14,8 +14,8 @@ import { mockedAuthorsList } from '@app/shared/mocks/mocks';
   styleUrls: ['./course-form.component.scss'],
 })
 export class CourseFormComponent {
-  authorsList!: Array<{ id: string, name: string }>;
-  courseAuthors: Array<{ id: string, name: string }> = [];
+  authorsList: Array<Author> = [];
+  courseAuthors: Array<Author> = [];
   deleteIcon = faTrash;
   addIcon = faAdd;
   submitted = false;
@@ -33,14 +33,14 @@ export class CourseFormComponent {
     authors: this.authors
   });
 
-  addToCourseAuthors(author: { id: string, name: string }) {
+  addToCourseAuthors(author: Author) {
     this.courseAuthors.push(author);
     this.authorsList.splice(this.authorsList.indexOf(author), 1);
     this.authors.push(new FormControl({ value: author, disabled: true }));
     this.cdr.detectChanges();
   }
 
-  removeFromCourseAuthors(author: { id: string, name: string }) {
+  removeFromCourseAuthors(author: Author) {
     this.authorsList.push(author);
     const authors = this.courseForm.controls["authors"] as FormArray;
     const index = authors.controls.findIndex(a => a.value.id == author.id);
@@ -59,6 +59,25 @@ export class CourseFormComponent {
 
   get authorsForm(): FormArray {
     return this.courseForm.get('authors') as FormArray;
+  }
+
+  @Output()
+  onFormSubmit = new EventEmitter<CourseFormData>();
+
+  submit() {
+    this.submitted = true;
+    if (this.courseForm.valid) {
+      const authorsCtrl = this.courseForm.get("authors") as FormArray;
+      const course = {
+        title: this.courseForm.controls["title"].value,
+        description: this.courseForm.controls["description"].value,
+        duration: this.courseForm.controls["duration"].value,
+        authors: authorsCtrl.controls.map(c => c.value["id"]),
+      };
+      this.onFormSubmit.emit(course);
+    } else {
+      this.courseForm.markAllAsTouched();
+    }
   }
 
   getErrors(controlName: string, errorName: string): boolean {

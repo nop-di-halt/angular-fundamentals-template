@@ -15,6 +15,10 @@ export class CoursesComponent {
 
   constructor(private coursesStoreService: CoursesStoreService, public userStoreService:UserStoreService) { }
 
+  search(value:string){
+    this.coursesStoreService.filterCourses(value)
+  }
+
   ngOnInit() {
     this.coursesStoreService.getAll();
   }

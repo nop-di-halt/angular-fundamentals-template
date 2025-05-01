@@ -10,12 +10,12 @@ export class SearchComponent {
   placeholder = "Input text";
 
   @Output()
-  search = new EventEmitter<string>();
+  onSearch = new EventEmitter<string>();
 
   value?:string;
 
   onSubmit(){
-    this.search.emit(this.value);
+    this.onSearch.emit(this.value);
     this.value="";
   }
 }

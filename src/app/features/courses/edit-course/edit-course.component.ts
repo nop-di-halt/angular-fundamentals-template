@@ -3,7 +3,7 @@ import { FormArray, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoursesStoreService } from '@app/services/courses-store.service';
 import { CourseFormComponent } from '@app/shared/components';
-import { Course } from '@app/shared/interfaces';
+import { Course, CourseFormData, CourseRequest } from '@app/shared/interfaces';
 import { combineLatest, Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -50,20 +50,14 @@ export class EditCourseComponent implements OnInit, AfterViewInit, OnDestroy {
     this.destroyed$.complete();
   }
 
-  onSubmit() {
-    this.form.submitted = true;
-    if (this.form.courseForm.valid) {
-      const authorsCtrl = this.form.courseForm.get("authors") as FormArray;
-      const course = {
-        title: this.form.courseForm.controls["title"].value,
-        description: this.form.courseForm.controls["description"].value,
-        creationDate: this.course.creationDate,
-        duration: this.form.courseForm.controls["duration"].value,
-        authors: authorsCtrl.controls.map(c => c.value["id"]),
-      };
-      this.coursesStoreService.editCourse(this.courseId, course);
-    } else {
-      this.form.courseForm.markAllAsTouched();
-    }
+  onSubmit(courseFormData: CourseFormData) {
+    const courseReq = Object.assign({} as CourseRequest, courseFormData);
+    courseReq.creationDate = this.course.creationDate;
+    this.coursesStoreService.editCourse(this.courseId, courseReq);
+    this.coursesStoreService.isProcessing$.pipe(takeUntil(this.destroyed$)).subscribe(isProcessing => {
+      if (!isProcessing) {
+        this.router.navigate(['/courses']);
+      }
+    });
   }
 }

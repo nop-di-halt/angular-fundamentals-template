@@ -1,6 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 import { AuthorizedGuard } from './auth/guards/authorized.guard';
 import { NotAuthorizedGuard } from './auth/guards/not-authorized.guard';
+import { RefreshComponent } from './features/courses/refresh/refresh.component';
 
 const routes: Routes = [
     {
@@ -26,7 +27,7 @@ const routes: Routes = [
     {
         path: '**',
         redirectTo: '/courses'
-    }
+    },
 ];
 
 export const routing = RouterModule.forRoot(routes);

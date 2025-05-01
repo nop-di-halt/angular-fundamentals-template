@@ -1,4 +1,1 @@
-<app-course-form>
-    <app-button routerLink="/courses">Cancel</app-button>
-    <app-button (click)="onSubmit()">Save</app-button>
-</app-course-form>
+<app-course-form (onFormSubmit)="onSubmit($event)"></app-course-form>

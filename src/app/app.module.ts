@@ -19,7 +19,7 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
     routing
   ],
-  providers: [AuthorizedGuard, NotAuthorizedGuard, CoursesService, CoursesStoreService],
+  providers: [AuthorizedGuard, NotAuthorizedGuard],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

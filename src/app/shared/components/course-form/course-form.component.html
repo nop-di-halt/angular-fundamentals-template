@@ -71,5 +71,6 @@
   </div>
 </form>
 <div class="form__action">
-  <ng-content></ng-content>
+  <app-button routerLink="/courses">Cancel</app-button>
+  <app-button (click)="submit()">Save</app-button>
 </div>

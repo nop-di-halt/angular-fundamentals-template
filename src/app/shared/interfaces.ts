@@ -41,12 +41,15 @@ export interface Author extends AuthorRequest {
     id: string
 }
 
-export interface CourseRequest {
+export interface CourseFormData{
     title: string,
     description: string,
-    creationDate: string,
-    duration: number,
+    duration: number
     authors: string[],
+}
+
+export interface CourseRequest extends CourseFormData {
+    creationDate: string,
 }
 
 export interface Course extends CourseRequest {
