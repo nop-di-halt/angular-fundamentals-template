@@ -4,6 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '@app/shared/shared.module';
+import { HttpClientModule } from '@angular/common/http';
 
 const routing = RouterModule.forChild([{ path: "", component: LoginComponent }]);
 
@@ -13,6 +14,7 @@ const routing = RouterModule.forChild([{ path: "", component: LoginComponent }])
     CommonModule,
     SharedModule,
     AuthModule,
+    HttpClientModule,
     routing
   ]
 })
