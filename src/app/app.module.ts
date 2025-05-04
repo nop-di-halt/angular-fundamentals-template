@@ -5,10 +5,11 @@ import { SharedModule } from '@shared/shared.module';
 import { AppComponent } from '@app/app.component';
 import { NotAuthorizedGuard } from '@app/auth/guards/not-authorized.guard';
 import { AuthorizedGuard } from '@app/auth/guards/authorized.guard';
-import { CoursesStoreService } from '@app/services/courses-store.service';
-import { CoursesService } from '@app/services/courses.service';
 import { routing } from './app-routing.module';
 import { AuthModule } from './auth/auth.module';
+import { EffectsModule } from '@ngrx/effects';
+import { effects, reducers } from './store';
+import { StoreModule } from '@ngrx/store';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,7 +18,9 @@ import { AuthModule } from './auth/auth.module';
     SharedModule,
     FontAwesomeModule,
     AuthModule,
-    routing
+    routing,
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot(effects),
   ],
   providers: [AuthorizedGuard, NotAuthorizedGuard],
   bootstrap: [AppComponent],
