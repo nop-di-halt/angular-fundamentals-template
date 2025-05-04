@@ -16,9 +16,9 @@ import { Observable } from 'rxjs';
 export class CoursesComponent {
   //courses$ = this.coursesStoreService.courses$ as Observable<Course[]>;
   //isLoading$ = this.coursesStoreService.isLoading$;
-  courses$ = this.store.select(getAllCourses);
-  //constructor(private coursesStoreService: CoursesStoreService, public userStoreService:UserStoreService) { }
-  constructor(private store: Store<State>) { }
+  courses$!: Observable<Course[]>;
+  //constructor(private coursesStoreService: CoursesStoreService, ) { }
+  constructor(public userStoreService: UserStoreService, private store: Store<State>) { }
 
   search(value: string) {
     //this.coursesStoreService.filterCourses(value)
@@ -27,5 +27,6 @@ export class CoursesComponent {
   ngOnInit() {
     //this.coursesStoreService.getAll();
     this.store.dispatch(requestAllCourses());
+    this.courses$ = this.store.select(getAllCourses);
   }
 }

@@ -1,6 +1,10 @@
 import { Course } from '@app/shared/interfaces';
 import { Action, createReducer, on } from '@ngrx/store';
 import * as actions from './courses.actions';
+import { state } from '@angular/animations';
+import { act } from '@ngrx/effects';
+
+export const coursesFeatureKey = 'courses';
 
 export interface CoursesState {
     allCourses: Course[],
@@ -24,7 +28,21 @@ export const coursesReducer = createReducer(
     initialState,
     on(actions.requestAllCourses, state => ({ ...state, isAllCoursesLoading: true })),
     on(actions.requestAllCoursesSuccess, (state, { courses }) => ({ ...state, allCourses: courses, isAllCoursesLoading: false })),
-    on(actions.requestAllCoursesFail, (state, { error }) => ({ ...state, errorMessage: error, isAllCoursesLoading: false }))
+    on(actions.requestAllCoursesFail, (state, { error }) => ({ ...state, errorMessage: error, isAllCoursesLoading: false })),
+    on(actions.requestSingleCourse, state => ({ ...state, isSingleCourseLoading: true })),
+    on(actions.requestSingleCourseSuccess, (state, { course }) => ({ ...state, isSingleCourseLoading: false, course: course })),
+    on(actions.requestSingleCourseFail, (state, { error }) => ({ ...state, isSingleCourseLoading: false, errorMessage: error })),
+    on(actions.requestFilteredCourses, state => ({ ...state, isSearchState: true })),
+    on(actions.requestFilteredCoursesSuccess, (state, { courses }) => ({ ...state, allCourses: courses, isSearchState: false })),
+    on(actions.requestFilteredCoursesFail, (state, { error }) => ({ ...state, isSearchState: false, errorMessage: error })),
+    on(actions.requestDeleteCourse, state => ({ ...state })),
+    on(actions.requestDeleteCourseFail, (state, { error }) => ({ ...state, errorMessage: error })),
+    on(actions.requestEditCourse, (state, { course }) => ({ ...state, course: course })),
+    on(actions.requestEditCourseSuccess, (state, { course }) => ({ ...state, course: course })),
+    on(actions.requestEditCourseFail, (state, { error }) => ({ ...state, errorMessage: error })),
+    on(actions.requestCreateCourse, (state, { course }) => ({ ...state, course: course })),
+    on(actions.requestCreateCourseSuccess, (state, { course }) => ({ ...state, course: course })),
+    on(actions.requestCreateCourseFail, (state, { error }) => ({ ...state, errorMessage: error }))
 );
 
 export const reducer = (state: CoursesState, action: Action): CoursesState => coursesReducer(state, action);
