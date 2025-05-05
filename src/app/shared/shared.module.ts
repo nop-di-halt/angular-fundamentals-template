@@ -18,6 +18,7 @@ import { CustomDatePipe } from './pipes/custom-date.pipe';
 import { EmailValidatorDirective } from '@shared/directives/email.directive';
 import { ShowPasswordDirective } from './directives/showPassword.directive';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 export const WINDOW = new InjectionToken<Window>('Window', { providedIn: "root",  factory: () => typeof window !== 'undefined' ? window : {} as Window});
 
@@ -44,7 +45,8 @@ const components = [
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    HttpClientModule
   ],
   exports: [components]
 })

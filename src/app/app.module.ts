@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { EffectsModule } from '@ngrx/effects';
 import { effects, reducers } from './store';
 import { StoreModule } from '@ngrx/store';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,6 +19,7 @@ import { StoreModule } from '@ngrx/store';
     SharedModule,
     FontAwesomeModule,
     AuthModule,
+    HttpClientModule,
     routing,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot(effects),

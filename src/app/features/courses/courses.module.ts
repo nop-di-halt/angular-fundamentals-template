@@ -9,6 +9,7 @@ import { EditCourseComponent } from './edit-course/edit-course.component';
 import { AdminGuard } from '@app/user/guards/admin.guard';
 import { CoursesListModule } from './courses-list/courses-list.module';
 import { RefreshComponent } from './refresh/refresh.component';
+import { HttpClientModule } from '@angular/common/http';
 
 const routing = RouterModule.forChild([
   { path: "edit/:id", component: EditCourseComponent, canActivate: [AdminGuard] },
@@ -24,6 +25,7 @@ const routing = RouterModule.forChild([
     CommonModule,
     SharedModule,
     CoursesListModule,
+    HttpClientModule,
     routing
   ]
 })
