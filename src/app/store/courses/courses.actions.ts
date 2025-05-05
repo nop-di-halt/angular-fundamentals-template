@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { CoursesConstants } from '@app/store/courses/courses.constants';
-import { Course } from '@app/shared/interfaces';
+import { Author, Course } from '@app/shared/interfaces';
 
 export const requestAllCourses = createAction(CoursesConstants.REQUEST_ALL_COURSES);
 export const requestAllCoursesSuccess = createAction(CoursesConstants.REQUEST_ALL_COURSES_SUCCESS, props<{ courses: Course[] }>());
@@ -25,3 +25,7 @@ export const requestEditCourseFail = createAction(CoursesConstants.REQUEST_EDIT_
 export const requestCreateCourse = createAction(CoursesConstants.REQUEST_CREATE_COURSE, props<{ course: Course }>());
 export const requestCreateCourseSuccess = createAction(CoursesConstants.REQUEST_CREATE_COURSE_SUCCESS, props<{ course: Course }>());
 export const requestCreateCourseFail = createAction(CoursesConstants.REQUEST_CREATE_COURSE_FAIL, props<{ error: string }>());
+
+export const requestAllAuthors = createAction(CoursesConstants.REQUEST_ALL_AUTHORS);
+export const requestAllAuthorsSuccess = createAction(CoursesConstants.REQUEST_ALL_AUTHORS_SUCCESS, props<{ authors: Author[] }>());
+export const requestAllAuthorsFail = createAction(CoursesConstants.REQUEST_ALL_AUTHORS_FAIL, props<{ error: string }>());

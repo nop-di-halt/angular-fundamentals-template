@@ -1,9 +1,9 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CoursesStoreService } from '@app/services/courses-store.service';
+import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { CourseFormComponent } from '@app/shared/components';
-import { Course, CourseFormData, CourseRequest } from '@app/shared/interfaces';
+import { Course, CourseFormData } from '@app/shared/interfaces';
+import { CoursesStateFacade } from '@app/store/courses/courses.facade';
 import { combineLatest, Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -11,34 +11,31 @@ import { combineLatest, Subject, takeUntil } from 'rxjs';
   templateUrl: './edit-course.component.html',
   styleUrls: ['./edit-course.component.css']
 })
-export class EditCourseComponent implements OnInit, AfterViewInit, OnDestroy {
+export class EditCourseComponent implements AfterViewInit, OnDestroy {
   course!: Course;
   courseId: string;
   private destroyed$ = new Subject<void>();
-  constructor(private coursesStoreService: CoursesStoreService, activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(activatedRoute: ActivatedRoute, private facade: CoursesStateFacade) {
     this.courseId = activatedRoute.snapshot.params["id"];
+    this.facade.getSingleCourse(this.courseId);
+    this.facade.getAllAuthors();
   }
 
   @ViewChild(CourseFormComponent)
   form!: CourseFormComponent
 
-  ngOnInit() {
-    this.coursesStoreService.getCourse(this.courseId);
-    this.coursesStoreService.getAllAuthors();
-  }
-
   ngAfterViewInit(): void {
     combineLatest([
-      this.coursesStoreService.result$,
-      this.coursesStoreService.authors$
+      this.facade.course$,
+      this.facade.allAuthors$
     ])
       .pipe(takeUntil(this.destroyed$))
       .subscribe(([course, authors]) => {
         this.course = course as Course;
         this.form.courseForm.patchValue(this.course);
 
-        const courseAuthors = authors.filter(a => this.course.authors.includes(a.id));
-        const availableAuthors = authors.filter(a => !this.course.authors.includes(a.id));
+        const courseAuthors = authors.filter(a => this.course.authors.includes(a.name));
+        const availableAuthors = authors.filter(a => !this.course.authors.includes(a.name));
         this.form.authorsList = availableAuthors;
         this.form.authors.clear();
         courseAuthors.forEach(a => this.form.authors.push(new FormControl({ value: a, disabled: true })));
@@ -51,13 +48,7 @@ export class EditCourseComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onSubmit(courseFormData: CourseFormData) {
-    const courseReq = Object.assign({} as CourseRequest, courseFormData);
-    courseReq.creationDate = this.course.creationDate;
-    this.coursesStoreService.editCourse(this.courseId, courseReq);
-    this.coursesStoreService.isProcessing$.pipe(takeUntil(this.destroyed$)).subscribe(isProcessing => {
-      if (!isProcessing) {
-        this.router.navigate(['/courses']);
-      }
-    });
+    const course = Object.assign({} as Course, courseFormData);
+    this.facade.editCourse(this.courseId, course);
   }
 }

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CoursesStoreService } from '@app/services/courses-store.service';
-import { Course } from '@app/shared/interfaces';
+import { Course} from '@app/shared/interfaces';
 import { State } from '@app/store';
 import { requestSingleCourse } from '@app/store/courses/courses.actions';
+import { CoursesStateFacade } from '@app/store/courses/courses.facade';
 import { getCourse } from '@app/store/courses/courses.selectors';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -14,15 +15,15 @@ import { Observable } from 'rxjs';
   styleUrls: ['./course-info.component.scss']
 })
 export class CourseInfoComponent implements OnInit {
-  course$!: Observable<Course | null>;
+  course$!: Observable<Course| null>;
   courseId: string;
 
-  constructor(activatedRoute: ActivatedRoute, private store: Store<State>) {
+  constructor(activatedRoute: ActivatedRoute, private facade: CoursesStateFacade) {
     this.courseId = activatedRoute.snapshot.params["id"];
+    this.facade.getSingleCourse(this.courseId);
   }
 
   ngOnInit() {
-    this.store.dispatch(requestSingleCourse({ id: this.courseId }));
-    this.course$ = this.store.select(getCourse);
+    this.course$ = this.facade.course$;
   }
 }

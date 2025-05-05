@@ -1,8 +1,7 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { CoursesStoreService } from '@app/services/courses-store.service';
+import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { CourseFormComponent } from '@app/shared/components';
-import { CourseFormData, CourseRequest } from '@app/shared/interfaces';
+import { Course, CourseFormData } from '@app/shared/interfaces';
+import { CoursesStateFacade } from '@app/store/courses/courses.facade';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -10,19 +9,17 @@ import { Subject, takeUntil } from 'rxjs';
   templateUrl: './add-course.component.html',
   styleUrls: ['./add-course.component.css']
 })
-export class AddCourseComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AddCourseComponent implements AfterViewInit, OnDestroy {
   private destroyed$ = new Subject<void>();
-  constructor(private coursesStoreService: CoursesStoreService, private router: Router) { }
+  constructor(private facade: CoursesStateFacade) {
+    this.facade.getAllAuthors();
+  }
 
   @ViewChild(CourseFormComponent)
   form!: CourseFormComponent
 
-  ngOnInit() {
-    this.coursesStoreService.getAllAuthors();
-  }
-
   ngAfterViewInit(): void {
-    this.coursesStoreService.authors$
+    this.facade.allAuthors$
       .pipe(takeUntil(this.destroyed$))
       .subscribe(authors => {
         authors.forEach(a => this.form.authorsList.push(a));
@@ -35,14 +32,7 @@ export class AddCourseComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onSubmit(courseFormData: CourseFormData) {
-    const courseReq = Object.assign({} as CourseRequest, courseFormData);
-    const date = new Date(Date.now());
-    courseReq.creationDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
-    this.coursesStoreService.createCourse(courseReq);
-    this.coursesStoreService.isProcessing$.pipe(takeUntil(this.destroyed$)).subscribe(isProcessing => {
-      if (!isProcessing) {
-        this.router.navigate(['/courses']);
-      }
-    });
+    const course = Object.assign({} as Course, courseFormData);
+    this.facade.createCourse(course);
   }
 }

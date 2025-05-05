@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { apiUrl } from '@app/shared/api';
-import { AuthorRequest,  AuthorsResponse, Course, CourseRequest, CoursesResponse } from '@app/shared/interfaces';
+import { AuthorRequest,  AuthorsResponse, Course, CoursesResponse } from '@app/shared/interfaces';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -14,11 +14,11 @@ export class CoursesService {
         return this.httpClient.get<CoursesResponse>(`${apiUrl}/courses/all`);
     }
 
-    createCourse(course: CourseRequest): Observable<CoursesResponse> {
+    createCourse(course: Course): Observable<CoursesResponse> {
         return this.httpClient.post<CoursesResponse>(`${apiUrl}/courses/add`, course);
     }
 
-    editCourse(id: string, course: CourseRequest): Observable<CoursesResponse> {
+    editCourse(id: string, course: Course): Observable<CoursesResponse> {
         return this.httpClient.put<CoursesResponse>(`${apiUrl}/courses/${id}`, course);
     }
 

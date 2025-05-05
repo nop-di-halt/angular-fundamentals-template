@@ -1,14 +1,13 @@
-import { Course } from '@app/shared/interfaces';
+import { Author, Course } from '@app/shared/interfaces';
 import { Action, createReducer, on } from '@ngrx/store';
 import * as actions from './courses.actions';
 import { state } from '@angular/animations';
-import { act } from '@ngrx/effects';
 
 export const coursesFeatureKey = 'courses';
 
 export interface CoursesState {
     allCourses: Course[],
-    course: Course | null,
+    course: Course| null,
     isAllCoursesLoading: boolean,
     isSingleCourseLoading: boolean,
     isSearchState: boolean,
@@ -23,6 +22,18 @@ export const initialState: CoursesState = {
     isSearchState: false,
     errorMessage: null
 };
+
+export interface AuthorsState {
+    allAuthors: Author[],
+    isAllAuthorsLoading: boolean,
+    errorMessage: string | null
+}
+
+export const authorsInitialState: AuthorsState = {
+    allAuthors: [],
+    isAllAuthorsLoading: false,
+    errorMessage: null
+}
 
 export const coursesReducer = createReducer(
     initialState,
@@ -45,4 +56,11 @@ export const coursesReducer = createReducer(
     on(actions.requestCreateCourseFail, (state, { error }) => ({ ...state, errorMessage: error }))
 );
 
+export const authorsReducer = createReducer(
+    authorsInitialState,
+    on(actions.requestAllAuthors, state => ({ ...state, isAllAuthorsLoading: true })),
+    on(actions.requestAllAuthorsSuccess, (state, { authors }) => ({ ...state, allAuthors: authors, isAllAuthorsLoading: false })),
+    on(actions.requestAllAuthorsFail, (state, { error }) => ({ ...state, isAllAuthorsLoading: false, errorMessage: error }))
+)
+;
 export const reducer = (state: CoursesState, action: Action): CoursesState => coursesReducer(state, action);

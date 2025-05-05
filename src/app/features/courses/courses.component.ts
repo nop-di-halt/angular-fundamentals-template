@@ -3,6 +3,7 @@ import { CoursesStoreService } from '@app/services/courses-store.service';
 import { Course } from '@app/shared/interfaces';
 import { State } from '@app/store';
 import { requestAllCourses } from '@app/store/courses/courses.actions';
+import { CoursesStateFacade } from '@app/store/courses/courses.facade';
 import { getAllCourses } from '@app/store/courses/courses.selectors';
 import { UserStoreService } from '@app/user/services/user-store.service';
 import { Store } from '@ngrx/store';
@@ -14,19 +15,16 @@ import { Observable } from 'rxjs';
   styleUrls: ['./courses.component.css']
 })
 export class CoursesComponent {
-  //courses$ = this.coursesStoreService.courses$ as Observable<Course[]>;
-  //isLoading$ = this.coursesStoreService.isLoading$;
   courses$!: Observable<Course[]>;
-  //constructor(private coursesStoreService: CoursesStoreService, ) { }
-  constructor(public userStoreService: UserStoreService, private store: Store<State>) { }
+  constructor(public userStoreService: UserStoreService, private facade: CoursesStateFacade) {
+    this.facade.getAllCourses();
+  }
 
   search(value: string) {
-    //this.coursesStoreService.filterCourses(value)
+    this.facade.getFilteredCourses(value);
   }
 
   ngOnInit() {
-    //this.coursesStoreService.getAll();
-    this.store.dispatch(requestAllCourses());
-    this.courses$ = this.store.select(getAllCourses);
+    this.courses$ = this.facade.allCourses$;
   }
 }

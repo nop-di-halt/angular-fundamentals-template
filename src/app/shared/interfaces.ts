@@ -48,11 +48,8 @@ export interface CourseFormData{
     authors: string[],
 }
 
-export interface CourseRequest extends CourseFormData {
+export interface Course extends CourseFormData {
     creationDate: string,
-}
-
-export interface Course extends CourseRequest {
     id: string
 }
 
