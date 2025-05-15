@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { SharedModule } from '@app/shared/shared.module';
 import { TokenInterceptor } from './interceptors/token.interceptor';
-import { AuthService } from './services/auth.service';
-import { SessionStorageService } from './services/session-storage.service';
 
 @NgModule({
   declarations: [
@@ -14,8 +12,7 @@ import { SessionStorageService } from './services/session-storage.service';
     HttpClientModule,
     SharedModule
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }, SessionStorageService,
-    AuthService,
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
 ]
 })
 export class AuthModule { }
